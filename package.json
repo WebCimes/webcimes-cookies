@@ -1,0 +1,45 @@
+{
+  "name": "webcimes-cookies",
+  "version": "0.0.1",
+  "description": "A simple and lightweight JavaScript library to manage cookies.",
+  "main": "./dist/js/webcimes-cookies.udm.js",
+  "module": "./dist/js/webcimes-cookies.esm.js",
+  "types": "./src/ts/webcimes-cookies.d.ts",
+  "scripts": {
+    "build": "webpack --config webpack.config.ts",
+    "watch": "webpack --config webpack.config.ts --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WebCimes/webcimes-cookies.git"
+  },
+  "author": "WebCimes",
+  "license": "MIT",
+  "keywords": [
+    "cookies",
+    "cookies management",
+    "accept cookies",
+    "cookies modal",
+    "javascript",
+    "vanilla javascript"
+  ],
+  "bugs": {
+    "url": "https://github.com/WebCimes/webcimes-cookies/issues"
+  },
+  "homepage": "https://github.com/WebCimes/webcimes-cookies#readme",
+  "devDependencies": {
+    "css-loader": "^6.8.1",
+    "css-minimizer-webpack-plugin": "^5.0.1",
+    "filemanager-webpack-plugin": "^8.0.0",
+    "mini-css-extract-plugin": "^2.7.6",
+    "ts-loader": "^9.4.4",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "@types/js-cookie": "^3.0.6",
+    "js-cookie": "^3.0.5"
+  }
+}
