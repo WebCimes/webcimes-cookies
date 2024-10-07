@@ -1,6 +1,6 @@
 {
   "name": "webcimes-cookies",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A simple and lightweight JavaScript library to manage cookies.",
   "main": "./dist/js/webcimes-cookies.udm.js",
   "module": "./dist/js/webcimes-cookies.esm.js",

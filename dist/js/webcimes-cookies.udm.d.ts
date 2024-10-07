@@ -4,34 +4,33 @@
  * Date: 2024-10-04
  */
 /**
+ * Default texts
+ */
+interface defaultTexts {
+    title: string;
+    description: string;
+    buttonAccept: string;
+    buttonRefuse: string;
+    buttonPreferences: string;
+    buttonBack: string;
+    preferenceAccept: string;
+    preferenceRefuse: string;
+}
+/**
  * Options
  */
 interface Options {
     /** set default wrapper element for cookies modal, default body */
     wrapperElement: string | HTMLElement | null;
-    /** set default language for texts, default "en" */
+    /** set default language for defaultTexts, default "en" */
     language: string;
-    /** set title of cookies, default "Cookies" */
-    title: string;
-    /** set description of cookies, default "We use cookies to ensure the operation of the site, personalize our content, and offer a better experience.<br><br>By clicking OK or by activating an option in the preferences, you agree to use the cookies." */
-    description: string;
-    /** set text of button accept, default "Accept" */
-    buttonAccept: string;
-    /** set text of button refuse, default "Refuse" */
-    buttonRefuse: string;
-    /** set text of button preferences, default "Preferences" */
-    buttonPreferences: string;
-    /** set text of button back, default "Back" */
-    buttonBack: string;
-    /** set text of preference accept, default "Accept" */
-    preferenceAccept: string;
-    /** set text of preference refuse, default "Refuse" */
-    preferenceRefuse: string;
-    /** cookies settings */
+    /** set default texts for cookies modal (override the language texts), default english texts */
+    defaultTexts: defaultTexts;
+    /** set default cookies settings */
     cookiesSettings: {
-        /** set default cookies consent cookie name, default "cookies_consent" */
+        /** set default cookie name for consent, default "cookies_consent" */
         consentCookieName: string;
-        /** set default cookies preferences cookie name, default "cookies_preferences" */
+        /** set default cookie name for preferences, default "cookies_preferences */
         preferencesCookieName: string;
         /** set default cookie expiration, value can be a Number which will be interpreted as days from time of creation or a Date instance, default 365 */
         expiration: number | Date;
@@ -39,7 +38,7 @@ interface Options {
         path: string;
         /** set default cookie domain, default current domain */
         domain: string;
-        /** set default cookie secure, default false */
+        /** set default cookie secure, default true */
         secure: boolean;
         /** set default cookie same site, default "Lax" */
         sameSite: "strict" | "Strict" | "lax" | "Lax" | "none" | "None";
@@ -65,9 +64,11 @@ export declare class WebcimesCookies {
     /** Cookie preferences */
     private preferences;
     /** Set the default texts for each language */
-    private texts;
+    private defaultTexts;
     /**
      * Create cookies modal
+     * @param options Options
+     * @param preferences Cookies preferences list with required and optional cookies
      */
     constructor(options: Partial<Options>, preferences: CookiePreference[]);
     /**

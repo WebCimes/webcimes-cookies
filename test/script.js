@@ -4,8 +4,12 @@ import {WebcimesCookies} from "../dist/js/webcimes-cookies.esm.js";
 // Wait for dom content loaded
 document.addEventListener("DOMContentLoaded", function()
 {
-    let cookies = new WebcimesCookies({
-        language: "en",
+    new WebcimesCookies({
+        language: "fr",
+        defaultTexts:
+        {
+            buttonAccept: "Hollaa",
+        }
     }, [
         {
             name: "cookie_required",
