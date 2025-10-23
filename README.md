@@ -144,64 +144,52 @@ document.addEventListener('DOMContentLoaded', function () {
 All parameters are optionnal, for start you can set the `wrapperElement` to define the parent element of the modal (default is `body`) like this:
 
 ```javascript
-const myModal = createWebcimesCookies(
-    {
-        wrapperElement: document.querySelector('body'), // set default wrapper element for cookies modal, default body
-    },
-    [],
-);
+const myModal = createWebcimesCookies({
+    wrapperElement: document.querySelector('body'), // set default wrapper element for cookies modal, default body
+});
 ```
 
 You can choose the default language text with `language` (the default language is `en`) like this:
 
 ```javascript
-const myModal = createWebcimesCookies(
-    {
-        language: 'en', // set default language for defaultTexts, default "en"
-    },
-    [],
-);
+const myModal = createWebcimesCookies({
+    language: 'en', // set default language for defaultTexts, default "en"
+});
 ```
 
 But you can also use `defaultTexts` to set custom title, description and buttons text (this will override the language text).
 
 ```javascript
-const myModal = createWebcimesCookies(
-    {
-        defaultTexts: {
-            // set default texts for cookies modal (override the language texts), default english texts
-            title: 'My title',
-            description: 'My description',
-            buttonAccept: 'Accept',
-            buttonRefuse: 'Refuse',
-            buttonPreferences: 'Preferences',
-            buttonBack: 'Back',
-            preferenceAccept: 'Accept',
-            preferenceRefuse: 'Refuse',
-        },
+const myModal = createWebcimesCookies({
+    defaultTexts: {
+        // set default texts for cookies modal (override the language texts), default english texts
+        title: 'My title',
+        description: 'My description',
+        buttonAccept: 'Accept',
+        buttonRefuse: 'Refuse',
+        buttonPreferences: 'Preferences',
+        buttonBack: 'Back',
+        preferenceAccept: 'Accept',
+        preferenceRefuse: 'Refuse',
     },
-    [],
-);
+});
 ```
 
 Then you can set the default cookies settings with `cookiesSettings` like this:
 
 ```javascript
-const myModal = createWebcimesCookies(
-    {
-        cookiesSettings: {
-            // set default cookies settings
-            consentCookieName: 'cookies_consent', // set default cookie name for consent, default "cookies_consent"
-            preferencesCookieName: 'cookies_preferences', // set default cookie name for preferences, default "cookies_preferences
-            expiration: 365, // set default cookie expiration, value can be a Number which will be interpreted as days from time of creation or a Date instance, default 365
-            path: '/', // set default cookie path, default "/"
-            domain: window.location.hostname, // set default cookie domain, default current domain
-            secure: true, // set default cookie secure, default true
-            sameSite: 'Lax',
-        },
+const myModal = createWebcimesCookies({
+    cookiesSettings: {
+        // set default cookies settings
+        consentCookieName: 'cookies_consent', // set default cookie name for consent, default "cookies_consent"
+        preferencesCookieName: 'cookies_preferences', // set default cookie name for preferences, default "cookies_preferences
+        expiration: 365, // set default cookie expiration, value can be a Number which will be interpreted as days from time of creation or a Date instance, default 365
+        path: '/', // set default cookie path, default "/"
+        domain: window.location.hostname, // set default cookie domain, default current domain
+        secure: true, // set default cookie secure, default true
+        sameSite: 'Lax',
     },
-    [],
-);
+});
 ```
 
 ### Set cookies preferences:
