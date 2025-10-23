@@ -4,10 +4,10 @@
  * Date: 2024-10-04
  */
 
-"use strict";
+'use strict';
 
 // Import js-cookie.ts
-import Cookies from 'js-cookie'
+import Cookies from 'js-cookie';
 
 /**
  * Default texts
@@ -29,10 +29,10 @@ interface defaultTexts {
 interface Options {
     /** set default wrapper element for cookies modal, default body */
     wrapperElement: string | HTMLElement | null;
-	/** set default language for defaultTexts, default "en" */
-	language: string;
+    /** set default language for defaultTexts, default "en" */
+    language: string;
     /** set default texts for cookies modal (override the language texts), default english texts */
-    defaultTexts: defaultTexts
+    defaultTexts: defaultTexts;
     /** set default cookies settings */
     cookiesSettings: {
         /** set default cookie name for consent, default "cookies_consent" */
@@ -48,7 +48,7 @@ interface Options {
         /** set default cookie secure, default true */
         secure: boolean;
         /** set default cookie same site, default "Lax" */
-        sameSite: "strict" | "Strict" | "lax" | "Lax" | "none" | "None";
+        sameSite: 'strict' | 'Strict' | 'lax' | 'Lax' | 'none' | 'None';
     };
 }
 
@@ -63,9 +63,20 @@ interface CookiePreference {
 }
 
 /**
- * Class WebcimesCookies
+ * Public interface for WebcimesCookies instances
+ * This represents the actual accessible members of the instance
  */
-export class WebcimesCookies {
+export interface WebcimesCookies {
+    /** Get the dom element of cookies */
+    cookies: HTMLElement | null;
+    /** Destroy the cookies modal */
+    destroy(): void;
+}
+
+/**
+ * Class WebcimesCookies implementation
+ */
+class WebcimesCookiesImpl implements WebcimesCookies {
     /** Get the dom element of cookies */
     public cookies: HTMLElement | null;
 
@@ -77,107 +88,115 @@ export class WebcimesCookies {
 
     /** Set the default texts for each language */
     private defaultTexts: { [key: string]: defaultTexts } = {
-		en: {
-			title: "Cookies",
-			description: "We use cookies to ensure the operation of the site, personalize our content, and offer a better experience.<br><br>By clicking OK or by activating an option in the preferences, you agree to use the cookies.",
-			buttonAccept: "Accept",
-			buttonRefuse: "Refuse",
-			buttonPreferences: "Preferences",
-			buttonBack: "Back",
-			preferenceAccept: "Accept",
-			preferenceRefuse: "Refuse",
-		},
-		fr: {
-			title: "Les cookies",
-			description: "Nous utilisons des cookies afin de garantir le fonctionnement du site, personnaliser notre contenu, ainsi que proposer une meilleure expérience.<br><br>En cliquant sur OK ou en activant une option dans les préférences, vous acceptez d'utiliser les cookies.",
-			buttonAccept: "Accepter",
-			buttonRefuse: "Refuser",
-			buttonPreferences: "Préférences",
-			buttonBack: "Retour",
-			preferenceAccept: "Accepter",
-			preferenceRefuse: "Refuser",
-		},
-		es: {
-			title: "Cookies",
-			description: "Utilizamos cookies para garantizar el funcionamiento del sitio, personalizar nuestro contenido y ofrecer una mejor experiencia.<br><br>Al hacer clic en Aceptar o al activar una opción en las preferencias, acepta el uso de cookies.",
-			buttonAccept: "Aceptar",
-			buttonRefuse: "Rechazar",
-			buttonPreferences: "Preferencias",
-			buttonBack: "Volver",
-			preferenceAccept: "Aceptar",
-			preferenceRefuse: "Rechazar",
-		},
-		de: {
-			title: "Cookies",
-			description: "Wir verwenden Cookies, um den Betrieb der Website zu gewährleisten, unseren Inhalt zu personalisieren und ein besseres Erlebnis zu bieten.<br><br>Durch Klicken auf OK oder durch Aktivieren einer Option in den Einstellungen stimmen Sie der Verwendung von Cookies zu.",
-			buttonAccept: "Akzeptieren",
-			buttonRefuse: "Ablehnen",
-			buttonPreferences: "Einstellungen",
-			buttonBack: "Zurück",
-			preferenceAccept: "Akzeptieren",
-			preferenceRefuse: "Ablehnen",
-		},
-		it: {
-			title: "Cookies",
-			description: "Utilizziamo i cookie per garantire il funzionamento del sito, personalizzare i nostri contenuti e offrire una migliore esperienza.<br><br>Cliccando su OK o attivando un'opzione nelle preferenze, accetti di utilizzare i cookie.",
-			buttonAccept: "Accetta",
-			buttonRefuse: "Rifiuta",
-			buttonPreferences: "Preferenze",
-			buttonBack: "Indietro",
-			preferenceAccept: "Accetta",
-			preferenceRefuse: "Rifiuta",
-		},
-		pt: {
-			title: "Cookies",
-			description: "Utilizamos cookies para garantir o funcionamento do site, personalizar nosso conteúdo e oferecer uma melhor experiência.<br><br>Ao clicar em OK ou ao ativar uma opção nas preferências, você concorda em usar os cookies.",
-			buttonAccept: "Aceitar",
-			buttonRefuse: "Recusar",
-			buttonPreferences: "Preferências",
-			buttonBack: "Voltar",
-			preferenceAccept: "Aceitar",
-			preferenceRefuse: "Recusar",
-		},
-		nl: {
-			title: "Cookies",
-			description: "We gebruiken cookies om de werking van de site te garanderen, onze inhoud te personaliseren en een betere ervaring te bieden.<br><br>Door op OK te klikken of een optie in de voorkeuren te activeren, gaat u akkoord met het gebruik van cookies.",
-			buttonAccept: "Accepteren",
-			buttonRefuse: "Weigeren",
-			buttonPreferences: "Voorkeuren",
-			buttonBack: "Terug",
-			preferenceAccept: "Accepteren",
-			preferenceRefuse: "Weigeren",
-		},
-		ru: {
-			title: "Cookies",
-			description: "Мы используем файлы cookie для обеспечения работы сайта, персонализации нашего контента и предоставления лучшего опыта.<br><br>Нажимая ОК или активируя опцию в настройках, вы соглашаетесь на использование файлов cookie.",
-			buttonAccept: "Принять",
-			buttonRefuse: "Отказать",
-			buttonPreferences: "Настройки",
-			buttonBack: "Назад",
-			preferenceAccept: "Принять",
-			preferenceRefuse: "Отказать",
-		},
+        en: {
+            title: 'Cookies',
+            description:
+                'We use cookies to ensure the operation of the site, personalize our content, and offer a better experience.<br><br>By clicking OK or by activating an option in the preferences, you agree to use the cookies.',
+            buttonAccept: 'Accept',
+            buttonRefuse: 'Refuse',
+            buttonPreferences: 'Preferences',
+            buttonBack: 'Back',
+            preferenceAccept: 'Accept',
+            preferenceRefuse: 'Refuse',
+        },
+        fr: {
+            title: 'Les cookies',
+            description:
+                "Nous utilisons des cookies afin de garantir le fonctionnement du site, personnaliser notre contenu, ainsi que proposer une meilleure expérience.<br><br>En cliquant sur OK ou en activant une option dans les préférences, vous acceptez d'utiliser les cookies.",
+            buttonAccept: 'Accepter',
+            buttonRefuse: 'Refuser',
+            buttonPreferences: 'Préférences',
+            buttonBack: 'Retour',
+            preferenceAccept: 'Accepter',
+            preferenceRefuse: 'Refuser',
+        },
+        es: {
+            title: 'Cookies',
+            description:
+                'Utilizamos cookies para garantizar el funcionamiento del sitio, personalizar nuestro contenido y ofrecer una mejor experiencia.<br><br>Al hacer clic en Aceptar o al activar una opción en las preferencias, acepta el uso de cookies.',
+            buttonAccept: 'Aceptar',
+            buttonRefuse: 'Rechazar',
+            buttonPreferences: 'Preferencias',
+            buttonBack: 'Volver',
+            preferenceAccept: 'Aceptar',
+            preferenceRefuse: 'Rechazar',
+        },
+        de: {
+            title: 'Cookies',
+            description:
+                'Wir verwenden Cookies, um den Betrieb der Website zu gewährleisten, unseren Inhalt zu personalisieren und ein besseres Erlebnis zu bieten.<br><br>Durch Klicken auf OK oder durch Aktivieren einer Option in den Einstellungen stimmen Sie der Verwendung von Cookies zu.',
+            buttonAccept: 'Akzeptieren',
+            buttonRefuse: 'Ablehnen',
+            buttonPreferences: 'Einstellungen',
+            buttonBack: 'Zurück',
+            preferenceAccept: 'Akzeptieren',
+            preferenceRefuse: 'Ablehnen',
+        },
+        it: {
+            title: 'Cookies',
+            description:
+                "Utilizziamo i cookie per garantire il funzionamento del sito, personalizzare i nostri contenuti e offrire una migliore esperienza.<br><br>Cliccando su OK o attivando un'opzione nelle preferenze, accetti di utilizzare i cookie.",
+            buttonAccept: 'Accetta',
+            buttonRefuse: 'Rifiuta',
+            buttonPreferences: 'Preferenze',
+            buttonBack: 'Indietro',
+            preferenceAccept: 'Accetta',
+            preferenceRefuse: 'Rifiuta',
+        },
+        pt: {
+            title: 'Cookies',
+            description:
+                'Utilizamos cookies para garantir o funcionamento do site, personalizar nosso conteúdo e oferecer uma melhor experiência.<br><br>Ao clicar em OK ou ao ativar uma opção nas preferências, você concorda em usar os cookies.',
+            buttonAccept: 'Aceitar',
+            buttonRefuse: 'Recusar',
+            buttonPreferences: 'Preferências',
+            buttonBack: 'Voltar',
+            preferenceAccept: 'Aceitar',
+            preferenceRefuse: 'Recusar',
+        },
+        nl: {
+            title: 'Cookies',
+            description:
+                'We gebruiken cookies om de werking van de site te garanderen, onze inhoud te personaliseren en een betere ervaring te bieden.<br><br>Door op OK te klikken of een optie in de voorkeuren te activeren, gaat u akkoord met het gebruik van cookies.',
+            buttonAccept: 'Accepteren',
+            buttonRefuse: 'Weigeren',
+            buttonPreferences: 'Voorkeuren',
+            buttonBack: 'Terug',
+            preferenceAccept: 'Accepteren',
+            preferenceRefuse: 'Weigeren',
+        },
+        ru: {
+            title: 'Cookies',
+            description:
+                'Мы используем файлы cookie для обеспечения работы сайта, персонализации нашего контента и предоставления лучшего опыта.<br><br>Нажимая ОК или активируя опцию в настройках, вы соглашаетесь на использование файлов cookie.',
+            buttonAccept: 'Принять',
+            buttonRefuse: 'Отказать',
+            buttonPreferences: 'Настройки',
+            buttonBack: 'Назад',
+            preferenceAccept: 'Принять',
+            preferenceRefuse: 'Отказать',
+        },
     };
 
     /**
      * Create cookies modal
      * @param options Options
-     * @param preferences Cookies preferences list with required and optional cookies 
+     * @param preferences Cookies preferences list with required and optional cookies
      */
     constructor(options: Partial<Options>, preferences: CookiePreference[]) {
         // Defaults
         const defaults: Options = {
-            wrapperElement: document.querySelector("body") as HTMLElement,
-            language: "en",
-            defaultTexts: this.defaultTexts["en"],
+            wrapperElement: document.querySelector('body') as HTMLElement,
+            language: 'en',
+            defaultTexts: this.defaultTexts['en'],
             cookiesSettings: {
-                consentCookieName: "cookies_consent",
-                preferencesCookieName: "cookies_preferences",
+                consentCookieName: 'cookies_consent',
+                preferencesCookieName: 'cookies_preferences',
                 expiration: 365,
-                path: "/",
+                path: '/',
                 domain: window.location.hostname,
                 secure: true,
-                sameSite: "Lax",
+                sameSite: 'Lax',
             },
         };
 
@@ -191,7 +210,7 @@ export class WebcimesCookies {
             options.defaultTexts = { ...defaults.defaultTexts, ...options.defaultTexts };
         }
 
-        // Merge defaults and options, and merge defaultTexts 
+        // Merge defaults and options, and merge defaultTexts
         this.options = { ...defaults, ...options };
 
         // Set preferences
@@ -201,45 +220,38 @@ export class WebcimesCookies {
         this.init();
     }
 
-	/**
-	 * Convert elements entry to an array of HTMLElement
-	 */
-	private getHtmlElements(element: string | HTMLElement | NodeList | null)
-	{
-		// Convert options.element to an array of HTMLElement
-		let htmlElements: HTMLElement[] = [];
-		if(element instanceof NodeList)
-		{
-			htmlElements = [...Array.from(element) as HTMLElement[]];
-		}
-		if(element instanceof HTMLElement)
-		{
-			htmlElements = [...[element]];
-		}
-		if(typeof element === "string")
-		{
-			htmlElements = [...Array.from(document.querySelectorAll(element)) as HTMLElement[]];
-		}
-		return htmlElements;
-	}
+    /**
+     * Convert elements entry to an array of HTMLElement
+     */
+    private getHtmlElements(element: string | HTMLElement | NodeList | null) {
+        // Convert options.element to an array of HTMLElement
+        let htmlElements: HTMLElement[] = [];
+        if (element instanceof NodeList) {
+            htmlElements = [...(Array.from(element) as HTMLElement[])];
+        }
+        if (element instanceof HTMLElement) {
+            htmlElements = [...[element]];
+        }
+        if (typeof element === 'string') {
+            htmlElements = [...(Array.from(document.querySelectorAll(element)) as HTMLElement[])];
+        }
+        return htmlElements;
+    }
 
-	/**
-	 * Convert element entry to an HTMLElement
-	 */
-	private getHtmlElement(element: string | HTMLElement | null)
-	{
-		// Convert options.element to an array of HTMLElement
-		let htmlElement: HTMLElement | null = null;
-		if(element instanceof HTMLElement)
-		{
-			htmlElement = element;
-		}
-		if(typeof element === "string")
-		{
-			htmlElement = document.querySelector(element) as HTMLElement | null;
-		}
-		return htmlElement;
-	}
+    /**
+     * Convert element entry to an HTMLElement
+     */
+    private getHtmlElement(element: string | HTMLElement | null) {
+        // Convert options.element to an array of HTMLElement
+        let htmlElement: HTMLElement | null = null;
+        if (element instanceof HTMLElement) {
+            htmlElement = element;
+        }
+        if (typeof element === 'string') {
+            htmlElement = document.querySelector(element) as HTMLElement | null;
+        }
+        return htmlElement;
+    }
 
     /**
      * Initialization of cookies modal
@@ -251,16 +263,16 @@ export class WebcimesCookies {
         // Insert cookies modal if not already accepted or refused
         if (Cookies.get(this.options.cookiesSettings.consentCookieName) === undefined) {
             // Insert cookies modal
-            wrapperElement?.insertAdjacentHTML("beforeend", this.renderCookiesModal());
+            wrapperElement?.insertAdjacentHTML('beforeend', this.renderCookiesModal());
 
             // Get the cookies modal
-            this.cookies = document.querySelector(".webcimes-cookies");
+            this.cookies = document.querySelector('.webcimes-cookies');
 
             // Focus the first button
-            (this.cookies?.querySelector(".webcimes-cookies__option") as HTMLElement)?.focus();
-            
+            (this.cookies?.querySelector('.webcimes-cookies__option') as HTMLElement)?.focus();
+
             // Bind events
-			this.bindEvents();
+            this.bindEvents();
         }
     }
 
@@ -286,7 +298,7 @@ export class WebcimesCookies {
                 <div class="webcimes-cookies__data">
                 <div class="webcimes-cookies__title">${this.options.defaultTexts.buttonPreferences}</div>
                 <div class="webcimes-cookies__preferences">
-                    ${this.preferences.map(pref => this.renderPreference(pref)).join('')}
+                    ${this.preferences.map((pref) => this.renderPreference(pref)).join('')}
                 </div>
                 </div>
                 <div class="webcimes-cookies__options">
@@ -310,7 +322,7 @@ export class WebcimesCookies {
                 <label>
                     <input type="checkbox" 
                         name="${preference.name}"
-                        ${preference.required ? "disabled" : ""} 
+                        ${preference.required ? 'disabled' : ''} 
                         checked
                         aria-hidden="true"
                         autocomplete="off">
@@ -340,32 +352,34 @@ export class WebcimesCookies {
      */
     private bindEvents() {
         // Events on buttons click
-        this.cookies?.querySelectorAll(".webcimes-cookies__option").forEach((el: HTMLElement) => {
-            el.addEventListener("click", () => this.onCookieOptionClick(el));
+        this.cookies?.querySelectorAll('.webcimes-cookies__option').forEach((el: HTMLElement) => {
+            el.addEventListener('click', () => this.onCookieOptionClick(el));
         });
 
         // Events on checkbox icon keydown
-        this.cookies?.querySelectorAll(".webcimes-cookies__icon").forEach((el: HTMLElement) => {
-            el.addEventListener("keydown", (e) => this.onCheckboxIconKeyDown(el, e));
+        this.cookies?.querySelectorAll('.webcimes-cookies__icon').forEach((el: HTMLElement) => {
+            el.addEventListener('keydown', (e) => this.onCheckboxIconKeyDown(el, e));
         });
 
         // Events on checkbox change
-        this.cookies?.querySelectorAll(".webcimes-cookies__check input[type=checkbox]").forEach((el: HTMLElement) => {
-            el.addEventListener("change", () => this.onCheckboxChange(el));
-        });
+        this.cookies
+            ?.querySelectorAll('.webcimes-cookies__check input[type=checkbox]')
+            .forEach((el: HTMLElement) => {
+                el.addEventListener('change', () => this.onCheckboxChange(el));
+            });
     }
 
     /**
      * Handle click on cookies modal buttons
      */
     private onCookieOptionClick(el: HTMLElement) {
-        if (el.classList.contains("webcimes-cookies__option--preferences")) {
+        if (el.classList.contains('webcimes-cookies__option--preferences')) {
             this.showPreferencesSection(true);
-        } else if (el.classList.contains("webcimes-cookies__option--back")) {
+        } else if (el.classList.contains('webcimes-cookies__option--back')) {
             this.showPreferencesSection(false);
-        } else if (el.classList.contains("webcimes-cookies__option--accept")) {
+        } else if (el.classList.contains('webcimes-cookies__option--accept')) {
             this.acceptCookies();
-        } else if (el.classList.contains("webcimes-cookies__option--refuse")) {
+        } else if (el.classList.contains('webcimes-cookies__option--refuse')) {
             this.refuseCookies();
         }
     }
@@ -374,11 +388,13 @@ export class WebcimesCookies {
      * Handle keydown on checkbox icon
      */
     private onCheckboxIconKeyDown(el: HTMLElement, e: KeyboardEvent) {
-        const checkbox = el.parentElement?.querySelector("input[type=checkbox]") as HTMLInputElement;
-        if ((e?.key === "Enter" || e?.key === " ") && !checkbox.disabled) {
+        const checkbox = el.parentElement?.querySelector(
+            'input[type=checkbox]',
+        ) as HTMLInputElement;
+        if ((e?.key === 'Enter' || e?.key === ' ') && !checkbox.disabled) {
             e.preventDefault();
             checkbox.checked = !checkbox.checked;
-            checkbox.dispatchEvent(new Event("change"));
+            checkbox.dispatchEvent(new Event('change'));
         }
     }
 
@@ -387,8 +403,10 @@ export class WebcimesCookies {
      */
     private onCheckboxChange(el: HTMLElement) {
         const checkbox = el as HTMLInputElement;
-        const icon = checkbox.parentElement?.querySelector(".webcimes-cookies__icon") as HTMLElement;
-        icon.setAttribute("aria-checked", checkbox.checked.toString());
+        const icon = checkbox.parentElement?.querySelector(
+            '.webcimes-cookies__icon',
+        ) as HTMLElement;
+        icon.setAttribute('aria-checked', checkbox.checked.toString());
     }
 
     /**
@@ -397,18 +415,26 @@ export class WebcimesCookies {
     private showPreferencesSection(showPreferences: boolean) {
         if (showPreferences) {
             // Show preferences section
-            this.cookies?.querySelector(".webcimes-cookies__section--default")?.classList.remove("webcimes-cookies__section--active");
-            this.cookies?.querySelector(".webcimes-cookies__section--preferences")?.classList.add("webcimes-cookies__section--active");
+            this.cookies
+                ?.querySelector('.webcimes-cookies__section--default')
+                ?.classList.remove('webcimes-cookies__section--active');
+            this.cookies
+                ?.querySelector('.webcimes-cookies__section--preferences')
+                ?.classList.add('webcimes-cookies__section--active');
 
             // Focus the first checkbox icon
-            (this.cookies?.querySelector(".webcimes-cookies__icon") as HTMLElement)?.focus();
+            (this.cookies?.querySelector('.webcimes-cookies__icon') as HTMLElement)?.focus();
         } else {
             // Show default section
-            this.cookies?.querySelector(".webcimes-cookies__section--preferences")?.classList.remove("webcimes-cookies__section--active");
-            this.cookies?.querySelector(".webcimes-cookies__section--default")?.classList.add("webcimes-cookies__section--active");
-            
+            this.cookies
+                ?.querySelector('.webcimes-cookies__section--preferences')
+                ?.classList.remove('webcimes-cookies__section--active');
+            this.cookies
+                ?.querySelector('.webcimes-cookies__section--default')
+                ?.classList.add('webcimes-cookies__section--active');
+
             // Focus the first button
-            (this.cookies?.querySelector(".webcimes-cookies__option") as HTMLElement)?.focus();
+            (this.cookies?.querySelector('.webcimes-cookies__option') as HTMLElement)?.focus();
         }
     }
 
@@ -420,8 +446,10 @@ export class WebcimesCookies {
         const preferencesState: Record<string, boolean> = {};
 
         // Get the state of each preference
-        this.preferences.forEach(pref => {
-            const checkbox = this.cookies?.querySelector(`input[name='${pref.name}']`) as HTMLInputElement;
+        this.preferences.forEach((pref) => {
+            const checkbox = this.cookies?.querySelector(
+                `input[name='${pref.name}']`,
+            ) as HTMLInputElement;
             preferencesState[pref.name] = checkbox?.checked || false;
         });
 
@@ -440,8 +468,8 @@ export class WebcimesCookies {
         const preferencesState: Record<string, boolean> = {};
 
         // Get the state of each preference
-        this.preferences.forEach(pref => {
-            preferencesState[pref.name] = pref.required || false;  // Required cookies stay active
+        this.preferences.forEach((pref) => {
+            preferencesState[pref.name] = pref.required || false; // Required cookies stay active
         });
 
         // Set cookies consent and preferences
@@ -455,33 +483,63 @@ export class WebcimesCookies {
      * Set cookies consent and preferences
      */
     private setCookies(consent: boolean, preferences: Record<string, boolean>) {
-        Cookies.set(this.options.cookiesSettings.consentCookieName, consent.toString(), { expires: this.options.cookiesSettings.expiration, path: this.options.cookiesSettings.path, domain: this.options.cookiesSettings.domain, secure: this.options.cookiesSettings.secure, sameSite: this.options.cookiesSettings.sameSite });
-        Cookies.set(this.options.cookiesSettings.preferencesCookieName, JSON.stringify(preferences), { expires: this.options.cookiesSettings.expiration, path: this.options.cookiesSettings.path, domain: this.options.cookiesSettings.domain, secure: this.options.cookiesSettings.secure, sameSite: this.options.cookiesSettings.sameSite });
+        Cookies.set(this.options.cookiesSettings.consentCookieName, consent.toString(), {
+            expires: this.options.cookiesSettings.expiration,
+            path: this.options.cookiesSettings.path,
+            domain: this.options.cookiesSettings.domain,
+            secure: this.options.cookiesSettings.secure,
+            sameSite: this.options.cookiesSettings.sameSite,
+        });
+        Cookies.set(
+            this.options.cookiesSettings.preferencesCookieName,
+            JSON.stringify(preferences),
+            {
+                expires: this.options.cookiesSettings.expiration,
+                path: this.options.cookiesSettings.path,
+                domain: this.options.cookiesSettings.domain,
+                secure: this.options.cookiesSettings.secure,
+                sameSite: this.options.cookiesSettings.sameSite,
+            },
+        );
     }
 
     /**
      * Destroy the cookies modal
      */
     public destroy() {
-        this.cookies?.classList.add("webcimes-cookies--inactive");
+        this.cookies?.classList.add('webcimes-cookies--inactive');
         setTimeout(() => {
             // Remove events on buttons click
-            this.cookies?.querySelectorAll(".webcimes-cookies__option").forEach((el: HTMLElement) => {
-                el.removeEventListener("click", () => this.onCookieOptionClick(el));
-            });
+            this.cookies
+                ?.querySelectorAll('.webcimes-cookies__option')
+                .forEach((el: HTMLElement) => {
+                    el.removeEventListener('click', () => this.onCookieOptionClick(el));
+                });
 
             // Remove events on checkbox icon keydown
-            this.cookies?.querySelectorAll(".webcimes-cookies__icon").forEach((el: HTMLElement) => {
-                el.removeEventListener("keydown", (e) => this.onCheckboxIconKeyDown(el, e));
+            this.cookies?.querySelectorAll('.webcimes-cookies__icon').forEach((el: HTMLElement) => {
+                el.removeEventListener('keydown', (e) => this.onCheckboxIconKeyDown(el, e));
             });
 
             // Remove events on checkbox change
-            this.cookies?.querySelectorAll(".webcimes-cookies__check input[type=checkbox]").forEach((el: HTMLElement) => {
-                el.removeEventListener("change", () => this.onCheckboxChange(el));
-            });
-    
+            this.cookies
+                ?.querySelectorAll('.webcimes-cookies__check input[type=checkbox]')
+                .forEach((el: HTMLElement) => {
+                    el.removeEventListener('change', () => this.onCheckboxChange(el));
+                });
+
             // Remove cookies modal
             this.cookies?.remove();
         }, 500);
     }
+}
+
+/**
+ * Factory function to create a WebcimesCookies instance with proper typing
+ */
+export function CreateWebcimesCookies(
+    options: Partial<Options>,
+    preferences: CookiePreference[],
+): WebcimesCookies {
+    return new WebcimesCookiesImpl(options, preferences);
 }

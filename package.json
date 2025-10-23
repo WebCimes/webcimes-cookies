@@ -1,6 +1,6 @@
 {
   "name": "webcimes-cookies",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "A simple and lightweight JavaScript library to manage cookies.",
   "main": "./dist/js/webcimes-cookies.udm.js",
   "module": "./dist/js/webcimes-cookies.esm.js",
@@ -32,6 +32,7 @@
     "css-minimizer-webpack-plugin": "^5.0.1",
     "filemanager-webpack-plugin": "^8.0.0",
     "mini-css-extract-plugin": "^2.7.6",
+    "prettier": "^3.6.2",
     "ts-loader": "^9.4.4",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2",

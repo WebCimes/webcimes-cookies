@@ -1,27 +1,29 @@
 // Import webcimes-cookies
-import {WebcimesCookies} from "../dist/js/webcimes-cookies.esm.js";
+import { CreateWebcimesCookies } from '../dist/js/webcimes-cookies.esm.js';
 
 // Wait for dom content loaded
-document.addEventListener("DOMContentLoaded", function()
-{
-    new WebcimesCookies({
-        language: "fr",
-        defaultTexts:
+document.addEventListener('DOMContentLoaded', function () {
+    CreateWebcimesCookies(
         {
-            buttonAccept: "Hollaa",
-        }
-    }, [
-        {
-            name: "cookie_required",
-            title: "Functional cookies",
-            description: "These cookies are essential for the website to function and cannot be disabled.",
-            required: true,
+            language: 'fr',
+            defaultTexts: {
+                buttonAccept: 'Hollaa',
+            },
         },
-        {
-            name: "cookie_analytics",
-            title: "Audience measurement and web analysis",
-            description: "These cookies allow the measurement of website traffic.",
-            required: false,
-        }
-    ]);
+        [
+            {
+                name: 'cookie_required',
+                title: 'Functional cookies',
+                description:
+                    'These cookies are essential for the website to function and cannot be disabled.',
+                required: true,
+            },
+            {
+                name: 'cookie_analytics',
+                title: 'Audience measurement and web analysis',
+                description: 'These cookies allow the measurement of website traffic.',
+                required: false,
+            },
+        ],
+    );
 });

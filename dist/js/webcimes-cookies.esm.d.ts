@@ -41,7 +41,7 @@ interface Options {
         /** set default cookie secure, default true */
         secure: boolean;
         /** set default cookie same site, default "Lax" */
-        sameSite: "strict" | "Strict" | "lax" | "Lax" | "none" | "None";
+        sameSite: 'strict' | 'Strict' | 'lax' | 'Lax' | 'none' | 'None';
     };
 }
 /**
@@ -54,79 +54,18 @@ interface CookiePreference {
     required?: boolean;
 }
 /**
- * Class WebcimesCookies
+ * Public interface for WebcimesCookies instances
+ * This represents the actual accessible members of the instance
  */
-export declare class WebcimesCookies {
+export interface WebcimesCookies {
     /** Get the dom element of cookies */
     cookies: HTMLElement | null;
-    /** Options of WebcimesCookies */
-    private options;
-    /** Cookie preferences */
-    private preferences;
-    /** Set the default texts for each language */
-    private defaultTexts;
-    /**
-     * Create cookies modal
-     * @param options Options
-     * @param preferences Cookies preferences list with required and optional cookies
-     */
-    constructor(options: Partial<Options>, preferences: CookiePreference[]);
-    /**
-     * Convert elements entry to an array of HTMLElement
-     */
-    private getHtmlElements;
-    /**
-     * Convert element entry to an HTMLElement
-     */
-    private getHtmlElement;
-    /**
-     * Initialization of cookies modal
-     */
-    private init;
-    /**
-     * Render the cookies modal
-     */
-    private renderCookiesModal;
-    /**
-     * Render each cookie preference checkbox
-     */
-    private renderPreference;
-    /**
-     * Bind events to the buttons and preferences
-     */
-    private bindEvents;
-    /**
-     * Handle click on cookies modal buttons
-     */
-    private onCookieOptionClick;
-    /**
-     * Handle keydown on checkbox icon
-     */
-    private onCheckboxIconKeyDown;
-    /**
-     * Handle change on checkbox
-     */
-    private onCheckboxChange;
-    /**
-     * Show or hide preferences section
-     */
-    private showPreferencesSection;
-    /**
-     * Handle accepting cookies
-     */
-    private acceptCookies;
-    /**
-     * Handle refusing cookies
-     */
-    private refuseCookies;
-    /**
-     * Set cookies consent and preferences
-     */
-    private setCookies;
-    /**
-     * Destroy the cookies modal
-     */
+    /** Destroy the cookies modal */
     destroy(): void;
 }
+/**
+ * Factory function to create a WebcimesCookies instance with proper typing
+ */
+export declare function CreateWebcimesCookies(options: Partial<Options>, preferences: CookiePreference[]): WebcimesCookies;
 export {};
 //# sourceMappingURL=webcimes-cookies.d.ts.map
