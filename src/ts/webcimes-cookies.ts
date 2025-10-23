@@ -539,7 +539,7 @@ class WebcimesCookiesImpl implements WebcimesCookies {
  */
 export function createWebcimesCookies(
     options: Partial<Options>,
-    preferences: CookiePreference[],
+    preferences: CookiePreference[] = [],
 ): WebcimesCookies {
     return new WebcimesCookiesImpl(options, preferences);
 }

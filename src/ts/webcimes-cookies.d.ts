@@ -66,6 +66,6 @@ export interface WebcimesCookies {
 /**
  * Factory function to create a WebcimesCookies instance with proper typing
  */
-export declare function createWebcimesCookies(options: Partial<Options>, preferences: CookiePreference[]): WebcimesCookies;
+export declare function createWebcimesCookies(options: Partial<Options>, preferences?: CookiePreference[]): WebcimesCookies;
 export {};
 //# sourceMappingURL=webcimes-cookies.d.ts.map
