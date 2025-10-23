@@ -537,7 +537,7 @@ class WebcimesCookiesImpl implements WebcimesCookies {
 /**
  * Factory function to create a WebcimesCookies instance with proper typing
  */
-export function CreateWebcimesCookies(
+export function createWebcimesCookies(
     options: Partial<Options>,
     preferences: CookiePreference[],
 ): WebcimesCookies {

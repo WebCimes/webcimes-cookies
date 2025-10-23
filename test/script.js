@@ -1,9 +1,9 @@
 // Import webcimes-cookies
-import { CreateWebcimesCookies } from '../dist/js/webcimes-cookies.esm.js';
+import { createWebcimesCookies } from '../dist/js/webcimes-cookies.esm.js';
 
 // Wait for dom content loaded
 document.addEventListener('DOMContentLoaded', function () {
-    CreateWebcimesCookies(
+    createWebcimesCookies(
         {
             language: 'fr',
             defaultTexts: {

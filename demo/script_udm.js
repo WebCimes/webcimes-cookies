@@ -1,6 +1,6 @@
 // Wait for dom content loaded
 document.addEventListener('DOMContentLoaded', function () {
-    CreateWebcimesCookies(
+    createWebcimesCookies(
         {
             wrapperElement: document.querySelector('body'), // set default wrapper element for cookies modal, default body
             language: 'en', // set default language for defaultTexts, default "en"
